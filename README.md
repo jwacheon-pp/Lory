@@ -1,0 +1,2 @@
+# Lory
+Life + Story = Lory
