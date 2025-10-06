@@ -10,6 +10,9 @@ $> cd <project name>
 $> uv init      # uv를 사용한 가상환경 자동 생성
 $> .venv\Scripts\activate   # .venv 로 가상환경 활성화
 (venv name) $> uv add Django
+
+# running local dev server 
+$> uv run manage.py runserver
 ```
 
 ## basic_settings.md(using pip)

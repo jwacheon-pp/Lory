@@ -25,11 +25,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(unique=True, max_length=255)
     password_hash = models.CharField(max_length=128)  # AbstractBaseUser set_password() 사용
-    name = models.CharField(max_length=50)
+    nickname = models.CharField(max_length=50)
 
     first_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50, blank=True)
-    username = models.CharField(max_length=50, unique=True, blank=True, null=True)
     profile_image_url = models.URLField(blank=True, null=True)
     bio = models.TextField(blank=True)
     phone_number = models.CharField(max_length=20, blank=True)
@@ -41,13 +40,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     last_login = models.DateTimeField(default=timezone.now)
     date_joined = models.DateTimeField(default=timezone.now)
-    login_count = models.IntegerField(default=0)
-    last_ip = models.GenericIPAddressField(blank=True, null=True)
-    last_password_change = models.DateTimeField(blank=True, null=True)
-
-    verification_token = models.CharField(max_length=100, blank=True, null=True)
-    password_reset_token = models.CharField(max_length=100, blank=True, null=True)
-    password_reset_expiry = models.DateTimeField(blank=True, null=True)
 
     objects = UserManager()
 
