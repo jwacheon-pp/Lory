@@ -1,4 +1,18 @@
-## basic_settings.md
+## basic_settings.md(using uv)
+
+### uv 
+```
+$> pip install uv
+
+$> mkdir <project name>
+$> cd <project name>
+
+$> uv init      # uv를 사용한 가상환경 자동 생성
+$> .venv\Scripts\activate   # .venv 로 가상환경 활성화
+(venv name) $> uv add Django
+```
+
+## basic_settings.md(using pip)
 - A document for basic envirionment instruction
 
 ### venv
@@ -21,8 +35,7 @@ $> conda env list
 $> conda activate <venv name>
 ```
 
-
-### Django
+## Django Setting
 - Django install
 ```
 $> python -m django --version
@@ -38,3 +51,25 @@ $> django-admin startproject <project name> <project directory>
 $> python manage.py startapp <app_name>
 ```
 
+- settings.py / INSTALLED_APPS 
+```
+INSTALLED_APPS = [
+    ...
+    '<app_name>.apps.UsersConfig',
+]
+```
+
+
+### Django REST Framework
+- pip install
+```
+$> pip install djangorestframework 
+```
+
+- settings.py / INSTALLED_APPS 
+```
+INSTALLED_APPS = [
+    ...
+    'rest_framework',
+]
+```

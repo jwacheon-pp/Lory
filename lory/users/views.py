@@ -1,10 +1,8 @@
 from django.http import HttpResponse
+from django.views import View
+from rest_framework import viewsets
 
 def ping(request):
     return HttpResponse("users service \"PONG\"")
 
-def get_user(request):
-    
-
-    return HttpResponse("get_user response")
-    
+class UserViewSet(viewsets.ModelViewSet):
