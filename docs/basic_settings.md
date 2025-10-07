@@ -15,6 +15,12 @@ $> .venv\Scripts\activate   # .venv 로 가상환경 활성화
 $> uv run manage.py runserver
 ```
 
+- uv project pull
+```
+$> git clone <project url>
+$> uv sync
+```
+
 ## basic_settings.md(using pip)
 - A document for basic envirionment instruction
 

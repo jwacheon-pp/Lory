@@ -11,26 +11,25 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)  # password hash 처리
-        user.save(using=self._db)
+        user.save()
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
-        extra_fields.setdefault("is_active", True)
         return self.create_user(email, password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(unique=True, max_length=255)
-    password_hash = models.CharField(max_length=128)  # AbstractBaseUser set_password() 사용
-    nickname = models.CharField(max_length=50)
+    password = models.CharField(max_length=128)  # AbstractBaseUser의 set_password() 사용
+    nickname = models.CharField(unique=True, max_length=50)
 
     first_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50, blank=True)
-    profile_image_url = models.URLField(blank=True, null=True)
-    bio = models.TextField(blank=True)
+    profile_image_url = models.URLField(blank=True, default="")
+    bio = models.TextField(blank=True, default="")
     phone_number = models.CharField(max_length=20, blank=True)
     date_of_birth = models.DateField(blank=True, null=True)
 
