@@ -3,7 +3,7 @@ from .views import UserViewSet, ping
 from django.urls import path, include
 
 router = DefaultRouter()
-router.register('users', UserViewSet, basename='users')
+router.register('posts', PostViewSet, basename='posts')
 
 # retrive / list / create/ update / partial_update / destroy 이외의 매핑은 @action으로 view에서 작성
 urlpatterns = [

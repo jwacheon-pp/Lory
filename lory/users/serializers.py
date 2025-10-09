@@ -18,15 +18,16 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'phone_number',
             'date_of_birth',
             'email_verified',
+            'is_superuser',
+            'is_staff',
         ]
         extra_kwargs = {
-            'url': {'view_name': 'users-detail', 'lookup_field': 'id'},
+            'url': {'view_name': 'users-detail', 'lookup_field': 'pk'},
         }
 
 # User 등록용 Serializer
 class SignUpSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True)
-
     class Meta:
         model = User
         fields = [
@@ -40,4 +41,15 @@ class SignUpSerializer(serializers.ModelSerializer):
             'date_of_birth',
             'email_verified',
             'password',
+        ]
+
+class ModifyUserSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = User 
+        fields =[
+            'password',
+            'nickname', 
+            'bio', 
+            'phone_number',
+            'profile_image_url',
         ]
