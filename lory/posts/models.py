@@ -2,17 +2,18 @@ from django.db import models
 from django.utils import timezone
 
 # Create your models here.
-class PostManager(): 
-    def create_user(self, **extra_fields):
+class PostManager(models.Manager):
+    def create_post(self, **extra_fields):
         post = self.model(**extra_fields)
         post.save()
+        return post
     
 class Post(models.Model):
     title = models.CharField(max_length=150)
     content = models.TextField()
     creator_id = models.IntegerField()
     created_at = models.DateField(blank=True, default=timezone.now)
-    is_active = models.BooleanField(blank=True, default=True)
+    is_active = models.BooleanField(default=True)
 
     objects = PostManager()
 
