@@ -1,5 +1,5 @@
 from rest_framework.routers import DefaultRouter
-from .views import UserViewSet, ping
+from .views import PostViewSet, ping
 from django.urls import path, include
 
 router = DefaultRouter()

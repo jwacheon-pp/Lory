@@ -7,7 +7,7 @@ class PostManager():
         post = self.model(**extra_fields)
         post.save()
     
-class Post():
+class Post(models.Model):
     title = models.CharField(max_length=150)
     content = models.TextField()
     creator_id = models.IntegerField()
@@ -21,4 +21,4 @@ class Post():
 
     class Meta:
         db_table = "Post"
-        ordering = ["-date_joined"]
+        ordering = ["-created_at"]
