@@ -12,7 +12,7 @@ class Post(models.Model):
     title = models.CharField(max_length=150)
     content = models.TextField()
     creator_id = models.IntegerField()
-    created_at = models.DateField(blank=True, default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=True)
 
     objects = PostManager()

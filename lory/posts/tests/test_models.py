@@ -1,8 +1,13 @@
 from django.test import TestCase
 from django.utils import timezone
+from django.core.management import call_command
 from posts.models import Post
 
 class PostModelTest(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        call_command('migrate', verbosity=0)
     def setUp(self):
         self.post_data = {
             'title': 'Test Post',

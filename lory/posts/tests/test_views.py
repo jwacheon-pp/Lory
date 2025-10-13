@@ -11,8 +11,8 @@ class PostViewSetTest(APITestCase):
             'creator_id': 1,
         }
         self.post = Post.objects.create(**self.post_data)
-        self.list_url = reverse('post-list')
-        self.detail_url = reverse('post-detail', kwargs={'pk': self.post.pk})
+        self.list_url = reverse('posts-list')
+        self.detail_url = reverse('posts-detail', kwargs={'pk': self.post.pk})
 
     def test_list_posts(self):
         # Post 목록을 가져오는 API 엔드포인트가 정상적으로 작동하는지 확인하는 테스트
