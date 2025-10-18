@@ -5,24 +5,17 @@ from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 
 class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
+
     username_field = 'email'
 
-    def validate(self, attrs):
-        email = attrs.get("email")
-        password = attrs.get("password")
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['id'] = user.id
+        token['username'] = user.username
+        token['email'] = user.email
 
-        # 사용자 인증 시도
-        user = authenticate(email=email, password=password)
-
-        if user is None:
-            raise serializers.ValidationError(_("Invalid email or password"))
-
-        # SimpleJWT의 기본 validate 로직 실행 (토큰 생성 등)
-        data = super().validate(attrs)
-        data["user_id"] = self.user.id
-        data["email"] = self.user.email
-
-        return data
+        return token
 
 # User 정보 조회용 Serializer
 class UserSerializer(serializers.HyperlinkedModelSerializer):
