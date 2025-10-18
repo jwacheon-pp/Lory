@@ -1,5 +1,5 @@
 from rest_framework.routers import DefaultRouter
-from .views import UserViewSet, ping
+from .views import UserViewSet, ping, EmailTokenObtainPairView
 from django.urls import path, include
 
 router = DefaultRouter()
@@ -9,4 +9,5 @@ router.register('users', UserViewSet, basename='users')
 urlpatterns = [
     path('ping/', ping),
     path('', include(router.urls)),
+    path('login/', EmailTokenObtainPairView.as_view(), name='login'),
 ]

@@ -36,7 +36,6 @@ THIRD_PARTIES = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'rest_framework.authtoken',
-    'dj_rest_auth',
 ]
 
 INSTALLED_APPS = [
@@ -58,13 +57,13 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ]  # login작업이외에 다른 views에서 토큰을 사용할 때 필요
 }
- 
+
 # 추가적인 JWT_AUTH 설정 (필요한 부분만 수정 )
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=7),
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': False,
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': False,
  
     'ALGORITHM': 'HS256',
