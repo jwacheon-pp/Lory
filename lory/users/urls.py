@@ -9,5 +9,4 @@ router.register('users', UserViewSet, basename='users')
 urlpatterns = [
     path('ping/', ping),
     path('', include(router.urls)),
-    path('login/', EmailTokenObtainPairView.as_view(), name='login'),
 ]

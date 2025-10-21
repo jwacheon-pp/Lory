@@ -179,3 +179,31 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'users.User'
+
+# Celery Config
+# Broker와 result backend는 운영 환경/개발 환경에 맞게 변경해야 함.
+# 여기서는 RabbitMQ(broker) + Redis(result backend) 구성 예시.
+
+# RabbitMQ (AMQP) - Celery broker
+CELERY_BROKER_URL = 'amqp://testuser:testpassword@localhost:5672//'
+# - 'amqp://' 스킴은 RabbitMQ를 의미
+# - user/password는 docker-compose에서 설정한 계정과 일치해야 함
+# - localhost:5672 는 Docker가 포트포워딩된 로컬 호스트의 주소
+
+# Redis - Celery result backend
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# - '/0'은 Redis의 DB 인덱스(논리 DB)를 의미 (기본 값은 0)
+# - 결과를 오래 저장할 필요가 없다면 CELERY_RESULT_EXPIRES로 TTL을 설정 가능
+
+# (권장) 직렬화와 허용 콘텐츠 형식
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+# 타임존: Celery와 Django의 타임존을 맞추는 것이 중요함
+CELERY_TIMEZONE = 'Asia/Tokyo'
+
+# (선택) 작업 실패/재시도와 관련된 설정 등 추가 가능
+# CELERY_TASK_ACKS_LATE = True
+# CELERY_TASK_REJECT_ON_WORKER_LOST = True
+# CELERY_WORKER_PREFETCH_MULTIPLIER = 1
