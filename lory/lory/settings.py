@@ -36,6 +36,7 @@ THIRD_PARTIES = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'rest_framework.authtoken',
+    'corsheaders',
 ]
 
 INSTALLED_APPS = [
@@ -92,6 +93,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -207,3 +209,8 @@ CELERY_TIMEZONE = 'Asia/Tokyo'
 # CELERY_TASK_ACKS_LATE = True
 # CELERY_TASK_REJECT_ON_WORKER_LOST = True
 # CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+
+
+# CORS Settings
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True

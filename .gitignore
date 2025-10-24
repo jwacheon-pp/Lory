@@ -208,3 +208,6 @@ __marimo__/
 
 # Other tools
 AGENTS.md
+
+# Node
+node_modules/
