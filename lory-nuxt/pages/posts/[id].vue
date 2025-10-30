@@ -14,15 +14,26 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import axios from 'axios'
+
 const config = useRuntimeConfig()
 const route = useRoute()
-
 const { id } = route.params
 
-// 백엔드 API에서 데이터 가져오기
-const {
-  data: post,
-  pending,
-  error,
-} = await useFetch(`${config.public.apiBase}/posts/${id}`)
+const post = ref(null)
+const pending = ref(true)
+const error = ref(null)
+
+onMounted(async () => {
+  try {
+    const res = await axios.get(`${config.public.apiBase}/posts/${id}`)
+    post.value = res.data
+  } catch (err) {
+    error.value = err
+  } finally {
+    pending.value = false
+  }
+})
 </script>

@@ -11,6 +11,7 @@
         class="border rounded p-4 mb-3 shadow-sm"
       >
         <NuxtLink :to="`/posts/${post.id}`" class="font-semibold text-lg text-blue-600 hover:underline">{{ post.title }}</NuxtLink>
+        <NuxtLink :to="`/posts/create`">new post</NuxtLink>
         <p class="text-gray-700">{{ post.content }}</p>
       </div>
     </div>
