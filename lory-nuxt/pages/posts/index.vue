@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script setup>
+<!-- <script setup>
 const config = useRuntimeConfig()
 
 // 백엔드 API에서 데이터 가져오기
@@ -26,4 +26,26 @@ const {
   pending,
   error,
 } = await useFetch(`${config.public.apiBase}/posts/`)
+</script> -->
+
+<!-- Axios version -->
+<script setup>
+import axios from 'axios'
+
+const config = useRuntimeConfig()
+
+const posts = ref([])
+const pending = ref(true)
+const error = ref(null)
+
+try {
+  const res = await axios.get(`${config.public.apiBase}/posts/`)
+  posts.value = res.data
+} catch (err) {
+  error.value = err
+} finally {
+  pending.value = false
+}
 </script>
+
+

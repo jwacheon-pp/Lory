@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from posts.models import Post
 from posts.serializers import CreatePostSerializer, ModifyPostSerializer, GetPostSerializer
+from posts.permissions import IsOwnerOrReadOnly
 from rest_framework import permissions
 from rest_framework.permissions import AllowAny
 
@@ -16,6 +17,9 @@ class PostViewSet(viewsets.ModelViewSet):
         return GetPostSerializer
 
     def get_permissions(self):
-        if self.action != 'create':
-            return [permissions.AllowAny()]  # 👈 회원가입만 예외
+        if self.action in ['retrieve', 'list']:
+            return [permissions.AllowAny()]
+        # create는 로그인 필요, 수정/삭제는 작성자만 가능
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [permissions.IsAuthenticated(), IsOwnerOrReadOnly()]
         return [permissions.IsAuthenticated()]
