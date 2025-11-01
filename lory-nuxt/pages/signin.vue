@@ -37,10 +37,10 @@ const config = useRuntimeConfig()
 const router = useRouter()
 const userStore = useUserStore()
 
-const email = ref('')
-const password = ref('')
-const pending = ref(false)
-const error = ref<string | null>(null)
+let email = ref('')
+let password = ref('')
+let pending = ref(false)
+let error = ref<string | null>(null)
 
 const login = async () => {
   pending.value = true
