@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +31,14 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+THIRD_PARTIES = [
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'rest_framework.authtoken',
+    'corsheaders',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,10 +48,52 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'posts.apps.PostsConfig',
-    'rest_framework'
-]
+] + THIRD_PARTIES
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES' : [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ]  # login작업이외에 다른 views에서 토큰을 사용할 때 필요
+}
+
+# 추가적인 JWT_AUTH 설정 (필요한 부분만 수정 )
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=3),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
+ 
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None, 
+    'JWK_URL': None,
+    'LEEWAY': 0,
+ 
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    # 'USER_ID_FIELD': 'id',
+    # 'USER_ID_CLAIM': 'user_id',
+    'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+ 
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+    'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+ 
+    'JTI_CLAIM': 'jti',
+ 
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': datetime.timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=1),
+}
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -130,3 +181,36 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'users.User'
+
+# Celery Config
+# Broker와 result backend는 운영 환경/개발 환경에 맞게 변경해야 함.
+# 여기서는 RabbitMQ(broker) + Redis(result backend) 구성 예시.
+
+# RabbitMQ (AMQP) - Celery broker
+CELERY_BROKER_URL = 'amqp://testuser:testpassword@localhost:5672//'
+# - 'amqp://' 스킴은 RabbitMQ를 의미
+# - user/password는 docker-compose에서 설정한 계정과 일치해야 함
+# - localhost:5672 는 Docker가 포트포워딩된 로컬 호스트의 주소
+
+# Redis - Celery result backend
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# - '/0'은 Redis의 DB 인덱스(논리 DB)를 의미 (기본 값은 0)
+# - 결과를 오래 저장할 필요가 없다면 CELERY_RESULT_EXPIRES로 TTL을 설정 가능
+
+# (권장) 직렬화와 허용 콘텐츠 형식
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+# 타임존: Celery와 Django의 타임존을 맞추는 것이 중요함
+CELERY_TIMEZONE = 'Asia/Tokyo'
+
+# (선택) 작업 실패/재시도와 관련된 설정 등 추가 가능
+# CELERY_TASK_ACKS_LATE = True
+# CELERY_TASK_REJECT_ON_WORKER_LOST = True
+# CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+
+
+# CORS Settings
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True

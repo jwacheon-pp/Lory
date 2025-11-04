@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from users.models import User
 
 # Create your models here.
 class PostManager(models.Manager):
@@ -11,7 +12,11 @@ class PostManager(models.Manager):
 class Post(models.Model):
     title = models.CharField(max_length=150)
     content = models.TextField()
-    creator_id = models.IntegerField()
+    creator = models.ForeignKey(
+        User,                    
+        on_delete=models.CASCADE, 
+        related_name="posts"      
+    )
     created_at = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=True)
 
